@@ -8,10 +8,12 @@ function App() {
   const [inputTodo, setInputTodo] = useState("");
   const [tasks, setTasks] = useState(["task1", "task2"]);
 
+  // テキスト
   const onChangeInputTodo = (e) => {
     setInputTodo(e.target.value);
   };
 
+  // 追加
   const onClickAdd = (event) => {
     if (inputTodo === "") return;
     const newTodos = [...tasks, inputTodo];
@@ -19,33 +21,62 @@ function App() {
     setInputTodo("");
     event.preventDefault();
   };
+
+  // 削除
+  const onClickDelete = (i) => {
+    const newTodos = [...tasks];
+    newTodos.splice(i, 1);
+    setTasks(newTodos);
+  };
+
+  // ラジオボタン実装
+  const [val, setVal] = useState('all');
+  const handleChange = e => setVal(e.target.value);
+
   return (
     <div>
       <h1>ToDoリスト</h1>
       <header>
-        <ul>
-          <li
-            onClick={() => {
-              setTab("all");
-            }}
-          >
-            すべて
-          </li>
-          <li
-            onClick={() => {
-              setTab("todo");
-            }}
-          >
-            作業中
-          </li>
-          <li
-            onClick={() => {
-              setTab("end");
-            }}
-          >
-            完了
-          </li>
-        </ul>
+      <table>
+          <tr>
+            <td>
+              <input
+                type="radio"
+                value="all"
+                onChange={handleChange}
+                checked={val === 'all'}
+                onClick={() => {
+                  setTab("all");
+                }}
+              />
+              すべて
+            </td>
+            <td>
+              <input
+                type="radio"
+                value="incomp"
+                onChange={handleChange}
+                checked={val === 'incomp'}
+                onClick={() => {
+                  setTab("todo");
+                }}
+              />
+              作業中
+            </td>
+            <td>
+              <input
+                type="radio"
+                value="comp"
+                onChange={handleChange}
+                checked={val === 'comp'}
+                onClick={() => {
+                  setTab("end");
+                }}
+              />
+              完了
+            </td>
+          </tr>
+        </table>
       </header>
       <hr />
       {(() => {
@@ -72,7 +103,7 @@ function App() {
                 <td>{task}</td>
                 <td>
                   <button>作業中</button>
-                  <button>削除</button>
+                  <button onClick={() => onClickDelete(index)}>削除</button>
                 </td>
               </tr>
             );
