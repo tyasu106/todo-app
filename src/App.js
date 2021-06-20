@@ -23,28 +23,28 @@ function App() {
   };
 
   // 削除
-  const onClickDelete = (i) => {
+  const onClickDelete = (index) => {
     const newTodos = [...tasks];
-    newTodos.splice(i, 1);
+    newTodos.splice(index, 1);
     setTasks(newTodos);
   };
 
   // ラジオボタン実装
-  const [val, setVal] = useState('all');
-  const handleChange = e => setVal(e.target.value);
+  const [val, setVal] = useState("all");
+  const handleChange = (e) => setVal(e.target.value);
 
   return (
     <div>
       <h1>ToDoリスト</h1>
       <header>
-      <table>
+        <table>
           <tr>
             <td>
               <input
                 type="radio"
                 value="all"
                 onChange={handleChange}
-                checked={val === 'all'}
+                checked={val === "all"}
                 onClick={() => {
                   setTab("all");
                 }}
@@ -56,7 +56,7 @@ function App() {
                 type="radio"
                 value="incomp"
                 onChange={handleChange}
-                checked={val === 'incomp'}
+                checked={val === "incomp"}
                 onClick={() => {
                   setTab("todo");
                 }}
@@ -68,7 +68,7 @@ function App() {
                 type="radio"
                 value="comp"
                 onChange={handleChange}
-                checked={val === 'comp'}
+                checked={val === "comp"}
                 onClick={() => {
                   setTab("end");
                 }}
