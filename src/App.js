@@ -33,6 +33,16 @@ function App() {
   const [val, setVal] = useState("all");
   const handleChange = (e) => setVal(e.target.value);
 
+  // 作業中・完了切り替え
+  const [btnState, setBtnState] = useState("作業中");
+  const onClickState = (index) => {
+    if (btnState === "作業中") {
+      setBtnState("完了");
+    } else {
+      setBtnState("作業中");
+    }
+  };
+
   return (
     <div>
       <h1>ToDoリスト</h1>
@@ -102,7 +112,9 @@ function App() {
                 <td>{index}</td>
                 <td>{task}</td>
                 <td>
-                  <button>作業中</button>
+                  <button onClick={() => onClickState(index)}>
+                    {btnState}
+                  </button>
                   <button onClick={() => onClickDelete(index)}>削除</button>
                 </td>
               </tr>
