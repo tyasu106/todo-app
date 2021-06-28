@@ -5,43 +5,46 @@ import { useState } from "react";
 
 function App() {
   const [tab, setTab] = useState("all");
-  const [inputTodo, setInputTodo] = useState("");
-  const [tasks, setTasks] = useState(["task1", "task2"]);
+  const initialState = [
+    {
+      task: "task1",
+      state: false,
+    },
+    {
+      task: "task2",
+      state: false,
+    },
+    {
+      task: "task3",
+      state: false,
+    },
+  ];
+  const [todos, setTodo] = useState(initialState);
+  const [task, setTask] = useState("")
 
   // テキスト
   const onChangeInputTodo = (e) => {
-    setInputTodo(e.target.value);
+    setTask(e.target.value);
   };
 
   // 追加
   const onClickAdd = (event) => {
-    if (inputTodo === "") return;
-    const newTodos = [...tasks, inputTodo];
-    setTasks(newTodos);
-    setInputTodo("");
     event.preventDefault();
+    if (task === "") return;
+    setTodo(todos =>  [...todos, { task, state: false}]);
+    setTask("");
   };
 
   // 削除
   const onClickDelete = (index) => {
-    const newTodos = [...tasks];
+    const newTodos = [...todos];
     newTodos.splice(index, 1);
-    setTasks(newTodos);
+    setTodo(newTodos);
   };
 
   // ラジオボタン実装
   const [val, setVal] = useState("all");
   const handleChange = (e) => setVal(e.target.value);
-
-  // 作業中・完了切り替え
-  const [btnState, setBtnState] = useState("作業中");
-  const onClickState = (index) => {
-    if (btnState === "作業中") {
-      setBtnState("完了");
-    } else {
-      setBtnState("作業中");
-    }
-  };
 
   return (
     <div>
@@ -106,15 +109,13 @@ function App() {
             <th>コメント</th>
             <th>状態</th>
           </tr>
-          {tasks.map((task, index) => {
+          {Object.keys(todos).map((index) => {
             return (
               <tr key={index}>
                 <td>{index}</td>
-                <td>{task}</td>
+                <td>{todos[index].task}</td>
                 <td>
-                  <button onClick={() => onClickState(index)}>
-                    {btnState}
-                  </button>
+                  <button>{todos[index].state}</button>
                   <button onClick={() => onClickDelete(index)}>削除</button>
                 </td>
               </tr>
@@ -124,7 +125,7 @@ function App() {
       </div>
       <h2>新規タスクの追加</h2>
       <form onClick={onClickAdd}>
-        <input value={inputTodo} onChange={onChangeInputTodo} />
+        <input value={task} onChange={onChangeInputTodo} />
         <button>追加</button>
       </form>
     </div>
