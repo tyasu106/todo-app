@@ -5,22 +5,23 @@ import { useState } from "react";
 
 function App() {
   const [tab, setTab] = useState("all");
+  const [btnState, setBtnState] = useState(false);
   const initialState = [
     {
       task: "task1",
-      state: false,
+      state: btnState,
     },
     {
       task: "task2",
-      state: false,
+      state: btnState,
     },
     {
       task: "task3",
-      state: false,
+      state: btnState,
     },
   ];
   const [todos, setTodo] = useState(initialState);
-  const [task, setTask] = useState("")
+  const [task, setTask] = useState("");
 
   // テキスト
   const onChangeInputTodo = (e) => {
@@ -31,7 +32,7 @@ function App() {
   const onClickAdd = (event) => {
     event.preventDefault();
     if (task === "") return;
-    setTodo(todos =>  [...todos, { task, state: false}]);
+    setTodo((todos) => [...todos, { task, state: false }]);
     setTask("");
   };
 
@@ -40,6 +41,14 @@ function App() {
     const newTodos = [...todos];
     newTodos.splice(index, 1);
     setTodo(newTodos);
+  };
+
+  const onChangeState = (index) => {
+    if (todos[index].state === false) {
+      setBtnState(true);
+    } else {
+      setBtnState(false);
+    }
   };
 
   // ラジオボタン実装
@@ -115,7 +124,9 @@ function App() {
                 <td>{index}</td>
                 <td>{todos[index].task}</td>
                 <td>
-                  <button>{todos[index].state}</button>
+                  <button onClick={() => onChangeState(index)}>
+                    {todos[index].state ? "完了" : "作業中"}
+                  </button>
                   <button onClick={() => onClickDelete(index)}>削除</button>
                 </td>
               </tr>
