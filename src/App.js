@@ -5,19 +5,18 @@ import { useState } from "react";
 
 function App() {
   const [tab, setTab] = useState("all");
-  const [btnState, setBtnState] = useState(false);
   const initialState = [
     {
       task: "task1",
-      state: btnState,
+      state: false,
     },
     {
       task: "task2",
-      state: btnState,
+      state: false,
     },
     {
       task: "task3",
-      state: btnState,
+      state: false,
     },
   ];
   const [todos, setTodo] = useState(initialState);
@@ -44,11 +43,13 @@ function App() {
   };
 
   const onChangeState = (index) => {
+    const newTodos = [...todos];
     if (todos[index].state === false) {
-      setBtnState(true);
+      todos[index].state = true;
     } else {
-      setBtnState(false);
+      todos[index].state = false;
     }
+    setTodo(newTodos);
   };
 
   // ラジオボタン実装
