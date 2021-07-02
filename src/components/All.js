@@ -1,5 +1,3 @@
 export const All = () => {
-  return(
-    <div>すべて</div>
-  )
-}
+  return <div>すべて</div>;
+};

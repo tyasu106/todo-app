@@ -1,5 +1,3 @@
 export const Incomp = () => {
-  return(
-    <div>作業中</div>
-  )
-}
+  return <div>作業中</div>;
+};
