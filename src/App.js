@@ -42,6 +42,7 @@ function App() {
     setTodo(newTodos);
   };
 
+  // 状態変更
   const onChangeState = (index) => {
     const newTodos = [...todos];
     if (todos[index].state === false) {
@@ -119,14 +120,14 @@ function App() {
             <th>コメント</th>
             <th>状態</th>
           </tr>
-          {Object.keys(todos).map((index) => {
+          {todos.map((todo, index) => {
             return (
               <tr key={index}>
                 <td>{index}</td>
-                <td>{todos[index].task}</td>
+                <td>{todo.task}</td>
                 <td>
                   <button onClick={() => onChangeState(index)}>
-                    {todos[index].state ? "完了" : "作業中"}
+                    {todo.state ? "完了" : "作業中"}
                   </button>
                   <button onClick={() => onClickDelete(index)}>削除</button>
                 </td>
