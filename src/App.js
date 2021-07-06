@@ -4,7 +4,6 @@ import { All } from "./components/All";
 import { useState } from "react";
 
 function App() {
-  const [tab, setTab] = useState("all");
   const initialState = [
     {
       task: "task1",
@@ -55,7 +54,17 @@ function App() {
 
   // ラジオボタン実装
   const [val, setVal] = useState("all");
-  const handleChange = (e) => setVal(e.target.value);
+  const handleChange = (e) => {
+    if (e.target.value === "all") {
+      setVal(e.target.value);
+    }
+    if (e.target.value === "incomp") {
+      setVal(e.target.value);
+    }
+    if (e.target.value === "comp") {
+      setVal(e.target.value);
+    }
+  };
 
   return (
     <div>
@@ -69,9 +78,6 @@ function App() {
                 value="all"
                 onChange={handleChange}
                 checked={val === "all"}
-                onClick={() => {
-                  setTab("all");
-                }}
               />
               すべて
             </td>
@@ -81,9 +87,6 @@ function App() {
                 value="incomp"
                 onChange={handleChange}
                 checked={val === "incomp"}
-                onClick={() => {
-                  setTab("todo");
-                }}
               />
               作業中
             </td>
@@ -93,9 +96,6 @@ function App() {
                 value="comp"
                 onChange={handleChange}
                 checked={val === "comp"}
-                onClick={() => {
-                  setTab("end");
-                }}
               />
               完了
             </td>
@@ -103,16 +103,6 @@ function App() {
         </table>
       </header>
       <hr />
-      {(() => {
-        if (tab === "all") {
-          return <All />;
-        }
-        if (tab === "todo") {
-          return <Incomp />;
-        } else {
-          return <Comp />;
-        }
-      })()}
       <div>
         <table>
           <tr>
@@ -120,20 +110,29 @@ function App() {
             <th>コメント</th>
             <th>状態</th>
           </tr>
-          {todos.map((todo, index) => {
-            return (
-              <tr key={index}>
-                <td>{index}</td>
-                <td>{todo.task}</td>
-                <td>
-                  <button onClick={() => onChangeState(index)}>
-                    {todo.state ? "完了" : "作業中"}
-                  </button>
-                  <button onClick={() => onClickDelete(index)}>削除</button>
-                </td>
-              </tr>
-            );
-          })}
+          {(() => {
+            if (val === "all") {
+              return todos.map((todo, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{index}</td>
+                    <td>{todo.task}</td>
+                    <td>
+                      <button onClick={() => onChangeState(index)}>
+                        {todo.state ? "完了" : "作業中"}
+                      </button>
+                      <button onClick={() => onClickDelete(index)}>削除</button>
+                    </td>
+                  </tr>
+                );
+              });
+            }
+            if (val === "incomp") {
+              return <Incomp />;
+            } else {
+              return <Comp />;
+            }
+          })()}
         </table>
       </div>
       <h2>新規タスクの追加</h2>
