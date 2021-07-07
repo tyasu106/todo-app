@@ -1,6 +1,3 @@
-import { Incomp } from "./components/Incomp";
-import { Comp } from "./components/Comp";
-import { All } from "./components/All";
 import { useState } from "react";
 
 function App() {
@@ -54,6 +51,9 @@ function App() {
 
   // ラジオボタン実装
   const [val, setVal] = useState("all");
+  const inCompTodos = todos.filter((todo) => todo.state === false);
+  const compTodos = todos.filter((todo) => todo.state === true);
+
   const handleChange = (e) => {
     if (e.target.value === "all") {
       setVal(e.target.value);
@@ -128,9 +128,35 @@ function App() {
               });
             }
             if (val === "incomp") {
-              return <Incomp />;
+              return inCompTodos.map((todo, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{index}</td>
+                    <td>{todo.task}</td>
+                    <td>
+                      <button onClick={() => onChangeState(index)}>
+                        {todo.state ? "完了" : "作業中"}
+                      </button>
+                      <button onClick={() => onClickDelete(index)}>削除</button>
+                    </td>
+                  </tr>
+                );
+              });
             } else {
-              return <Comp />;
+              return compTodos.map((todo, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{index}</td>
+                    <td>{todo.task}</td>
+                    <td>
+                      <button onClick={() => onChangeState(index)}>
+                        {todo.state ? "完了" : "作業中"}
+                      </button>
+                      <button onClick={() => onClickDelete(index)}>削除</button>
+                    </td>
+                  </tr>
+                );
+              });
             }
           })()}
         </table>
