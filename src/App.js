@@ -2,15 +2,18 @@ import { useState } from "react";
 
 function App() {
   const initialState = [
-    {
+    { 
+      id: 0,
       task: "task1",
       state: false,
     },
     {
+      id: 1,
       task: "task2",
       state: false,
     },
     {
+      id: 2,
       task: "task3",
       state: false,
     },
@@ -27,7 +30,8 @@ function App() {
   const onClickAdd = (event) => {
     event.preventDefault();
     if (task === "") return;
-    setTodo((todos) => [...todos, { task, state: false }]);
+    const id = todos.length
+    setTodo((todos) => [...todos, { id, task, state: false }]);
     setTask("");
   };
 
@@ -112,47 +116,47 @@ function App() {
           </tr>
           {(() => {
             if (val === "all") {
-              return todos.map((todo, index) => {
+              return todos.map((todo) => {
                 return (
-                  <tr key={index}>
-                    <td>{index}</td>
+                  <tr key={todo.id}>
+                    <td>{todo.id}</td>
                     <td>{todo.task}</td>
                     <td>
-                      <button onClick={() => onChangeState(index)}>
+                      <button onClick={() => onChangeState(todo.id)}>
                         {todo.state ? "完了" : "作業中"}
                       </button>
-                      <button onClick={() => onClickDelete(index)}>削除</button>
+                      <button onClick={() => onClickDelete(todo.id)}>削除</button>
                     </td>
                   </tr>
                 );
               });
             }
             if (val === "incomp") {
-              return inCompTodos.map((todo, index) => {
+              return inCompTodos.map((todo) => {
                 return (
-                  <tr key={index}>
-                    <td>{index}</td>
+                  <tr key={todo.id}>
+                    <td>{todo.id}</td>
                     <td>{todo.task}</td>
                     <td>
-                      <button onClick={() => onChangeState(index)}>
+                      <button onClick={() => onChangeState(todo.id)}>
                         {todo.state ? "完了" : "作業中"}
                       </button>
-                      <button onClick={() => onClickDelete(index)}>削除</button>
+                      <button onClick={() => onClickDelete(todo.id)}>削除</button>
                     </td>
                   </tr>
                 );
               });
             } else {
-              return compTodos.map((todo, index) => {
+              return compTodos.map((todo) => {
                 return (
-                  <tr key={index}>
-                    <td>{index}</td>
+                  <tr key={todo.id}>
+                    <td>{todo.id}</td>
                     <td>{todo.task}</td>
                     <td>
-                      <button onClick={() => onChangeState(index)}>
+                      <button onClick={() => onChangeState(todo.id)}>
                         {todo.state ? "完了" : "作業中"}
                       </button>
-                      <button onClick={() => onClickDelete(index)}>削除</button>
+                      <button onClick={() => onClickDelete(todo.id)}>削除</button>
                     </td>
                   </tr>
                 );
