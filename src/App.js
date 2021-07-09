@@ -2,7 +2,7 @@ import { useState } from "react";
 
 function App() {
   const initialState = [
-    { 
+    {
       id: 0,
       task: "task1",
       state: false,
@@ -30,7 +30,7 @@ function App() {
   const onClickAdd = (event) => {
     event.preventDefault();
     if (task === "") return;
-    const id = todos.length
+    const id = todos.length;
     setTodo((todos) => [...todos, { id, task, state: false }]);
     setTask("");
   };
@@ -55,10 +55,18 @@ function App() {
 
   // ラジオボタン実装
   const [val, setVal] = useState("all");
-  const inCompTodos = todos.filter((todo) => todo.state === false);
-  const compTodos = todos.filter((todo) => todo.state === true);
+  const filteredTodos = todos.filter((todo) => {
+    switch (val) {
+      case "incomp":
+        return todo.state === false;
+      case "comp":
+        return todo.state === true;
+      default:
+        return todo;
+    }
+  });
 
-  const handleChange = (e) => {
+  const handleChangeTab = (e) => {
     if (e.target.value === "all") {
       setVal(e.target.value);
     }
@@ -80,7 +88,7 @@ function App() {
               <input
                 type="radio"
                 value="all"
-                onChange={handleChange}
+                onChange={handleChangeTab}
                 checked={val === "all"}
               />
               すべて
@@ -89,7 +97,7 @@ function App() {
               <input
                 type="radio"
                 value="incomp"
-                onChange={handleChange}
+                onChange={handleChangeTab}
                 checked={val === "incomp"}
               />
               作業中
@@ -98,7 +106,7 @@ function App() {
               <input
                 type="radio"
                 value="comp"
-                onChange={handleChange}
+                onChange={handleChangeTab}
                 checked={val === "comp"}
               />
               完了
@@ -114,55 +122,20 @@ function App() {
             <th>コメント</th>
             <th>状態</th>
           </tr>
-          {(() => {
-            if (val === "all") {
-              return todos.map((todo) => {
-                return (
-                  <tr key={todo.id}>
-                    <td>{todo.id}</td>
-                    <td>{todo.task}</td>
-                    <td>
-                      <button onClick={() => onChangeState(todo.id)}>
-                        {todo.state ? "完了" : "作業中"}
-                      </button>
-                      <button onClick={() => onClickDelete(todo.id)}>削除</button>
-                    </td>
-                  </tr>
-                );
-              });
-            }
-            if (val === "incomp") {
-              return inCompTodos.map((todo) => {
-                return (
-                  <tr key={todo.id}>
-                    <td>{todo.id}</td>
-                    <td>{todo.task}</td>
-                    <td>
-                      <button onClick={() => onChangeState(todo.id)}>
-                        {todo.state ? "完了" : "作業中"}
-                      </button>
-                      <button onClick={() => onClickDelete(todo.id)}>削除</button>
-                    </td>
-                  </tr>
-                );
-              });
-            } else {
-              return compTodos.map((todo) => {
-                return (
-                  <tr key={todo.id}>
-                    <td>{todo.id}</td>
-                    <td>{todo.task}</td>
-                    <td>
-                      <button onClick={() => onChangeState(todo.id)}>
-                        {todo.state ? "完了" : "作業中"}
-                      </button>
-                      <button onClick={() => onClickDelete(todo.id)}>削除</button>
-                    </td>
-                  </tr>
-                );
-              });
-            }
-          })()}
+          {filteredTodos.map((todo) => {
+            return (
+              <tr key={todo.id}>
+                <td>{todo.id}</td>
+                <td>{todo.task}</td>
+                <td>
+                  <button onClick={() => onChangeState(todo.id)}>
+                    {todo.state ? "完了" : "作業中"}
+                  </button>
+                  <button onClick={() => onClickDelete(todo.id)}>削除</button>
+                </td>
+              </tr>
+            );
+          })}
         </table>
       </div>
       <h2>新規タスクの追加</h2>
