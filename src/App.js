@@ -1,20 +1,19 @@
-import { Incomp } from "./components/Incomp";
-import { Comp } from "./components/Comp";
-import { All } from "./components/All";
 import { useState } from "react";
 
 function App() {
-  const [tab, setTab] = useState("all");
   const initialState = [
     {
+      id: 0,
       task: "task1",
       state: false,
     },
     {
+      id: 1,
       task: "task2",
       state: false,
     },
     {
+      id: 2,
       task: "task3",
       state: false,
     },
@@ -31,7 +30,8 @@ function App() {
   const onClickAdd = (event) => {
     event.preventDefault();
     if (task === "") return;
-    setTodo((todos) => [...todos, { task, state: false }]);
+    const id = todos.length;
+    setTodo((todos) => [...todos, { id, task, state: false }]);
     setTask("");
   };
 
@@ -55,7 +55,28 @@ function App() {
 
   // ラジオボタン実装
   const [val, setVal] = useState("all");
-  const handleChange = (e) => setVal(e.target.value);
+  const filteredTodos = todos.filter((todo) => {
+    switch (val) {
+      case "incomp":
+        return todo.state === false;
+      case "comp":
+        return todo.state === true;
+      default:
+        return todo;
+    }
+  });
+
+  const handleChangeTab = (e) => {
+    if (e.target.value === "all") {
+      setVal(e.target.value);
+    }
+    if (e.target.value === "incomp") {
+      setVal(e.target.value);
+    }
+    if (e.target.value === "comp") {
+      setVal(e.target.value);
+    }
+  };
 
   return (
     <div>
@@ -67,11 +88,8 @@ function App() {
               <input
                 type="radio"
                 value="all"
-                onChange={handleChange}
+                onChange={handleChangeTab}
                 checked={val === "all"}
-                onClick={() => {
-                  setTab("all");
-                }}
               />
               すべて
             </td>
@@ -79,11 +97,8 @@ function App() {
               <input
                 type="radio"
                 value="incomp"
-                onChange={handleChange}
+                onChange={handleChangeTab}
                 checked={val === "incomp"}
-                onClick={() => {
-                  setTab("todo");
-                }}
               />
               作業中
             </td>
@@ -91,11 +106,8 @@ function App() {
               <input
                 type="radio"
                 value="comp"
-                onChange={handleChange}
+                onChange={handleChangeTab}
                 checked={val === "comp"}
-                onClick={() => {
-                  setTab("end");
-                }}
               />
               完了
             </td>
@@ -103,16 +115,6 @@ function App() {
         </table>
       </header>
       <hr />
-      {(() => {
-        if (tab === "all") {
-          return <All />;
-        }
-        if (tab === "todo") {
-          return <Incomp />;
-        } else {
-          return <Comp />;
-        }
-      })()}
       <div>
         <table>
           <tr>
@@ -120,16 +122,16 @@ function App() {
             <th>コメント</th>
             <th>状態</th>
           </tr>
-          {todos.map((todo, index) => {
+          {filteredTodos.map((todo) => {
             return (
-              <tr key={index}>
-                <td>{index}</td>
+              <tr key={todo.id}>
+                <td>{todo.id}</td>
                 <td>{todo.task}</td>
                 <td>
-                  <button onClick={() => onChangeState(index)}>
+                  <button onClick={() => onChangeState(todo.id)}>
                     {todo.state ? "完了" : "作業中"}
                   </button>
-                  <button onClick={() => onClickDelete(index)}>削除</button>
+                  <button onClick={() => onClickDelete(todo.id)}>削除</button>
                 </td>
               </tr>
             );
